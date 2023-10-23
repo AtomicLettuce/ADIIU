@@ -28,4 +28,5 @@ header('Content-Type: application/json');
 
 // Output the data as JSON
 echo json_encode($data);
+
 ?>

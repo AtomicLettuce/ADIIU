@@ -1,7 +1,9 @@
-async function pingala(){
-// Fetch data from the PHP script
-const response = await fetch('data.php');
-const data = await response.json();
-console.log("hola");
-}
-pingala();
+// Create an XMLHttpRequest object
+const xhttp = new XMLHttpRequest(); 
+xhttp.onload = function() {
+    console.log(xhttp.responseText);
+    
+  }
+
+xhttp.open("GET", "data.php");
+xhttp.send();
