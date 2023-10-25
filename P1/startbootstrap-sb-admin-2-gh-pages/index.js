@@ -31,8 +31,27 @@ db.connect((err) => {
 
 // Set up the server
 app.listen('6900', () => {
-    console.log('Server started on port 3000');
+    console.log('Server started on port 6900');
 });
+
+app.get('/tipus', (req,res) =>{
+    db.query(`SELECT 
+    tipus, SUM(recompte) quantitat
+FROM
+    (SELECT 
+        tipus_1 tipus, COUNT(*) recompte
+    FROM
+        pokedex
+    GROUP BY tipus_1 UNION SELECT 
+        tipus_2 tipus, COUNT(*) recompte
+    FROM
+        pokedex
+    WHERE
+        tipus_2 != ''
+    GROUP BY tipus_2
+    ORDER BY tipus) t
+GROUP BY t.tipus;`);
+})
 
 
 app.use('/', express.static(path.join(__dirname, '')));
