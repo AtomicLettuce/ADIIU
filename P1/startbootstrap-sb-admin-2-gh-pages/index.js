@@ -52,15 +52,26 @@ FROM
     ORDER BY tipus) t
 GROUP BY t.tipus;`, (err, results) => {
         if (err) {
-            // Manejar errores de la consulta
-            console.error('Error al ejecutar la consulta:', err);
-            res.status(500).json({ error: 'Error en la consulta' });
-        } else {
-            // Enviar los resultados como respuesta JSON
-            res.json(results);
+            throw err;
         }
+
+        // Transform the data into a format that can be used by Highcharts
+        const data = results.map(result => ({
+            name: result.developer,
+            y: result.count
+        }));
+
+        // Send the data to the client
+        res.json(data);
     });
 });
+
+
+
+
+
+
+
 
 app.get('/consultaLegendarios', (req, res) => {
     db.query('SELECT tipus_1, COUNT(*) FROM pokedex WHERE es_llegendari="TRUE" GROUP BY tipus_1;', (err, results) => {

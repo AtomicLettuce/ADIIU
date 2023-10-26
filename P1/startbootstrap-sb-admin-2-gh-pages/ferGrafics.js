@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     console.log("hola");
-    fetch('/consultaLegendarios7')
+    fetch('/tipus')
         .then(response => response.json())
         .then(data => {
             // Manejar y mostrar los resultados de la primera consulta
