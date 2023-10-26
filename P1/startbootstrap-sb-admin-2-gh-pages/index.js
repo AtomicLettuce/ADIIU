@@ -34,7 +34,7 @@ app.listen('6900', () => {
     console.log('Server started on port 6900');
 });
 
-app.get('/tipus', (req,res) =>{
+app.get('/tipus', (req, res) => {
     db.query(`SELECT 
     tipus, SUM(recompte) quantitat
 FROM
@@ -50,8 +50,30 @@ FROM
         tipus_2 != ''
     GROUP BY tipus_2
     ORDER BY tipus) t
-GROUP BY t.tipus;`);
-})
+GROUP BY t.tipus;`, (err, results) => {
+        if (err) {
+            // Manejar errores de la consulta
+            console.error('Error al ejecutar la consulta:', err);
+            res.status(500).json({ error: 'Error en la consulta' });
+        } else {
+            // Enviar los resultados como respuesta JSON
+            res.json(results);
+        }
+    });
+});
+
+app.get('/consultaLegendarios', (req, res) => {
+    db.query('SELECT tipus_1, COUNT(*) FROM pokedex WHERE es_llegendari="TRUE" GROUP BY tipus_1;', (err, results) => {
+        if (err) {
+            console.error('Error en la consulta 1:', err);
+            res.status(500).json({ error: 'Error en la consulta 1' });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+
 
 
 app.use('/', express.static(path.join(__dirname, '')));
