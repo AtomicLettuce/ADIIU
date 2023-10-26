@@ -34,6 +34,7 @@ app.listen('6900', () => {
     console.log('Server started on port 6900');
 });
 
+
 app.get('/tipus', (req, res) => {
     db.query(`SELECT 
     tipus, SUM(recompte) quantitat
@@ -50,19 +51,18 @@ FROM
         tipus_2 != ''
     GROUP BY tipus_2
     ORDER BY tipus) t
-GROUP BY t.tipus;`, (err, results) => {
+GROUP BY t.tipus
+ORDER BY quantitat DESC;`, (err, results) => {
         if (err) {
-            throw err;
+            console.error('Error en la consulta 1:', err);
+            res.status(500).json({ error: 'Error en la consulta 1' });
+        } else {
+            const data = results.map(results =>({
+                name: results.tipus,
+                y: results.quantitat
+            }));
+            res.json(data);
         }
-
-        // Transform the data into a format that can be used by Highcharts
-        const data = results.map(result => ({
-            name: result.developer,
-            y: result.count
-        }));
-
-        // Send the data to the client
-        res.json(data);
     });
 });
 
