@@ -57,11 +57,26 @@ ORDER BY quantitat DESC;`, (err, results) => {
             console.error('Error en la consulta 1:', err);
             res.status(500).json({ error: 'Error en la consulta 1' });
         } else {
-            const data = results.map(results =>({
+            const data = results.map(results => ({
                 name: results.tipus,
                 y: results.quantitat
             }));
             res.json(data);
+        }
+    });
+});
+
+app.get('/randomPokemon', (req, res) => {
+    db.query(
+        `SELECT * FROM pokedex
+            ORDER BY RAND()
+            LIMIT 1;`,
+        (err, results) => {
+        if (err) {
+            console.error('Error en la consulta 1:', err);
+            res.status(500).json({ error: 'Error en la consulta 1' });
+        } else {
+            res.json(results);
         }
     });
 });
@@ -73,8 +88,11 @@ ORDER BY quantitat DESC;`, (err, results) => {
 
 
 
+
+
+
 app.get('/consultaLegendarios', (req, res) => {
-    db.query('SELECT tipus_1, COUNT(*) FROM pokedex WHERE es_llegendari="TRUE" GROUP BY tipus_1;', (err, results) => {
+    db.query(`SELECT tipus_1, COUNT(*) FROM pokedex WHERE es_llegendari="TRUE" GROUP BY tipus_1;`, (err, results) => {
         if (err) {
             console.error('Error en la consulta 1:', err);
             res.status(500).json({ error: 'Error en la consulta 1' });
