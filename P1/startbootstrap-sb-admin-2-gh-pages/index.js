@@ -6,6 +6,25 @@ Server side js
 const express = require('express');
 const mysql = require('mysql');
 const path = require('path');
+const google = require('googleapis').google;
+const googleSearch =google.customsearch('v1');
+
+async function test(){
+    const response = await googleSearch.cse.list({
+        auth:'AIzaSyBdzhrXiFGR4AMQdyX6tiaIm3ubnh_Dpo0',
+        cx:'611cd72e554a74cb0',
+        q: 'Nirvana',
+        searchType: 'image',
+        num:2
+    });
+    //console.log(response);
+    //console.log(response.request.responseURL);
+    const url = await fetch(response.request.responseURL);
+    const urlr =await url.json();
+    console.log(urlr.items[0].link);
+}
+
+
 
 // Create an instance of express
 const app = express();
@@ -91,6 +110,7 @@ app.get('/randomPokemon', (req, res) => {
 
 
 
+
 app.get('/consultaLegendarios', (req, res) => {
     db.query(`SELECT tipus_1, COUNT(*) FROM pokedex WHERE es_llegendari="TRUE" GROUP BY tipus_1;`, (err, results) => {
         if (err) {
@@ -106,3 +126,5 @@ app.get('/consultaLegendarios', (req, res) => {
 
 
 app.use('/', express.static(path.join(__dirname, '')));
+
+test();
