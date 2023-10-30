@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 data[i].color = colors[i];
             }
             // Create the donut chart
-Highcharts.chart('chartContainer', {
+            Highcharts.chart('chartContainer', {
                 chart: {
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
@@ -51,5 +51,42 @@ Highcharts.chart('chartContainer', {
         })
         .catch(error => {
             console.error('Error al obtener los datos de la consulta 1:', error);
+        });
+
+
+    fetch('/topAtac')
+        .then(response => response.json())
+        .then(data => {
+
+            const pokemonData = data; // Los datos obtenidos de tu API
+
+            const pokemonNames = pokemonData.map(pokemon => pokemon.name); // Nombres de los Pokémon
+            const attackValues = pokemonData.map(pokemon => pokemon.y); // Valores de ataque de los Pokémon
+            console.log(pokemonNames)
+            console.log(attackValues)
+
+            Highcharts.chart('contenidorAtac', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Ataque de Pokémon'
+                },
+                xAxis: {
+                    categories: pokemonNames // Nombres de los Pokémon
+                },
+                yAxis: {
+                    title: {
+                        text: 'Ataque'
+                    }
+                },
+                series: [{
+                    name: 'Pokemon',
+                    data: attackValues // Valores de ataque de los Pokémon
+                }]
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos de la consulta 2:', error);
         });
 });
