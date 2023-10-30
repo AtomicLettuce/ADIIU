@@ -85,6 +85,21 @@ ORDER BY quantitat DESC;`, (err, results) => {
     });
 });
 
+app.get('/topAtac', (req, res) => {
+    db.query(`SELECT nom,atac FROM pokedex ORDER BY atac DESC LIMIT 5`, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta 1:', err);
+            res.status(500).json({ error: 'Error en la consulta 1' });
+        } else {
+            const data = results.map(results => ({
+                name: results.nom,
+                y: results.atac
+            }));
+            res.json(data);
+        }
+    });
+});
+
 app.get('/randomPokemon', (req, res) => {
     db.query(
         `SELECT * FROM pokedex
