@@ -9,19 +9,19 @@ const path = require('path');
 const google = require('googleapis').google;
 const googleSearch =google.customsearch('v1');
 
-async function test(){
+async function googleImgQuery(query){
     const response = await googleSearch.cse.list({
         auth:'AIzaSyBdzhrXiFGR4AMQdyX6tiaIm3ubnh_Dpo0',
         cx:'611cd72e554a74cb0',
-        q: 'Nirvana',
+        q: query,
         searchType: 'image',
         num:2
     });
     //console.log(response);
     //console.log(response.request.responseURL);
     const url = await fetch(response.request.responseURL);
-    const urlr =await url.json();
-    console.log(urlr.items[0].link);
+    const urlresp =await url.json();
+    return urlresp.items[0].link;
 }
 
 
@@ -102,15 +102,20 @@ app.get('/topAtac', (req, res) => {
 
 app.get('/randomPokemon', (req, res) => {
     db.query(
-        `SELECT * FROM pokedex
+        `SELECT nom FROM pokedex
             ORDER BY RAND()
             LIMIT 1;`,
-        (err, results) => {
+        async (err, results) => {
         if (err) {
             console.error('Error en la consulta 1:', err);
             res.status(500).json({ error: 'Error en la consulta 1' });
         } else {
-            res.json(results);
+            //res.json(results);
+            console.log(results[0].nom);
+            img = await googleImgQuery(results[0].nom);
+            console.log(img);
+            res.json(img);
+
         }
     });
 });
@@ -137,9 +142,4 @@ app.get('/consultaLegendarios', (req, res) => {
     });
 });
 
-
-
-
 app.use('/', express.static(path.join(__dirname, '')));
-
-test();

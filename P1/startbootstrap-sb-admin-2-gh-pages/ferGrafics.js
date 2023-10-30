@@ -89,4 +89,23 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => {
             console.error('Error al obtener los datos de la consulta 2:', error);
         });
+
+
+
+    fetch('/randomPokemon')
+        .then(response => response.json())
+        .then(data => {
+            const img = data;
+            var container = document.getElementById('pokemonRandom');
+            console.log(img);
+            const imgHTML = document.createElement('img');
+            imgHTML.src = img;
+            imgHTML.style.width = 'auto';
+            imgHTML.style.height = '100%';
+            container.style.display = 'flex';
+            container.style.justifyContent = 'center';
+            container.style.alignItems = 'center';
+            container.appendChild(imgHTML);
+
+        })
 });
