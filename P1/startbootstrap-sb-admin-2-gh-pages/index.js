@@ -21,6 +21,12 @@ async function googleImgQuery(query){
     //console.log(response.request.responseURL);
     const url = await fetch(response.request.responseURL);
     const urlresp =await url.json();
+    if(urlresp.items!==undefined){
+        console.log('has items')
+        if(urlresp.items[0].link !==undefined){
+            console.log('has link')
+        }
+    }
     return urlresp.items[0].link;
 }
 
@@ -112,7 +118,12 @@ app.get('/randomPokemon', (req, res) => {
         } else {
             //res.json(results);
             console.log(results[0].nom);
-            img = await googleImgQuery(results[0].nom);
+            var img={
+                link:'',
+                nom:''
+            }
+            img.link = await googleImgQuery(results[0].nom);
+            img.nom = results[0].nom;
             console.log(img);
             res.json(img);
 

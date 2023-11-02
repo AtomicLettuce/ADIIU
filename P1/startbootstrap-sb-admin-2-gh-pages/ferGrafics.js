@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
 
-
+ 
     fetch('/randomPokemon')
         .then(response => response.json())
         .then(data => {
@@ -99,7 +99,8 @@ document.addEventListener('DOMContentLoaded', function () {
             var container = document.getElementById('pokemonRandom');
             console.log(img);
             const imgHTML = document.createElement('img');
-            imgHTML.src = img;
+            imgHTML.src = img.link;
+            imgHTML.alt = img.nom;
             imgHTML.style.width = 'auto';
             imgHTML.style.height = '100%';
             container.style.display = 'flex';
