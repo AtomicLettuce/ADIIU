@@ -90,8 +90,18 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error al obtener los datos de la consulta 2:', error);
         });
 
+    const radioForm = document.getElementById("radioForm");
+    const resultElement = document.getElementById("result");
 
- 
+    radioForm.addEventListener("change", function (event) {
+        if (event.target && event.target.type === "radio") {
+            const selectedOption = event.target.value;
+            ferGrafic(selectedOption);
+        }
+    });
+
+
+
     fetch('/randomPokemon')
         .then(response => response.json())
         .then(data => {
@@ -107,6 +117,44 @@ document.addEventListener('DOMContentLoaded', function () {
             container.style.justifyContent = 'center';
             container.style.alignItems = 'center';
             container.appendChild(imgHTML);
-
         })
 });
+
+
+async function ferGrafic(opcio) {
+    console.log(opcio +'opcio:')
+    fetch(opcio)
+        .then(response => response.json())
+        .then(data => {
+            const pokemonData = data; // Los datos obtenidos de tu API
+
+            const pokemonNames = pokemonData.map(pokemon => pokemon.name); // Nombres de los Pokémon
+            const statValues = pokemonData.map(pokemon => pokemon.y); // Valores de ataque de los Pokémon
+            console.log(pokemonNames)
+            console.log(statValues)
+
+            Highcharts.chart('contenidorAtac', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: opcio.slice(4) +' de Pokémon'
+                },
+                xAxis: {
+                    categories: pokemonNames // Nombres de los Pokémon
+                },
+                yAxis: {
+                    title: {
+                        text: opcio.slice(4)
+                    }
+                },
+                series: [{
+                    name: 'Pokemon',
+                    data: statValues // Valores de ataque de los Pokémon
+                }]
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos de la consulta 2:', error);
+        });
+    }

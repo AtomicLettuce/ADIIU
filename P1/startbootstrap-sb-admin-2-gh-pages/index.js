@@ -10,7 +10,7 @@ const google = require('googleapis').google;
 const googleSearch =google.customsearch('v1');
 
 async function googleImgQuery(query){
-    const response = await googleSearch.cse.list({
+    /*const response = await googleSearch.cse.list({
         auth:'AIzaSyBdzhrXiFGR4AMQdyX6tiaIm3ubnh_Dpo0',
         cx:'611cd72e554a74cb0',
         q: query,
@@ -19,15 +19,18 @@ async function googleImgQuery(query){
     });
     //console.log(response);
     //console.log(response.request.responseURL);
+    
     const url = await fetch(response.request.responseURL);
     const urlresp =await url.json();
-    if(urlresp.items!==undefined){
+    if('items' in urlresp){
         console.log('has items')
-        if(urlresp.items[0].link !==undefined){
+        if('items[0].link' in urlresp ){
             console.log('has link')
+            return urlresp.items[0].link;
         }
-    }
-    return urlresp.items[0].link;
+    }*/
+    return 'https://www.cristorey3.com/assets/img/jutges/jutges-3.webp'
+    
 }
 
 
@@ -105,6 +108,62 @@ app.get('/topAtac', (req, res) => {
         }
     });
 });
+app.get('/topDefensa', (req, res) => {
+    db.query(`SELECT nom,defensa FROM pokedex ORDER BY defensa DESC LIMIT 5`, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta 1:', err);
+            res.status(500).json({ error: 'Error en la consulta 1' });
+        } else {
+            const data = results.map(results => ({
+                name: results.nom,
+                y: results.defensa
+            }));
+            res.json(data);
+        }
+    });
+});
+app.get('/topHP', (req, res) => {
+    db.query(`SELECT nom,HP FROM pokedex ORDER BY hp DESC LIMIT 5`, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta 1:', err);
+            res.status(500).json({ error: 'Error en la consulta 1' });
+        } else {
+            const data = results.map(results => ({
+                name: results.nom,
+                y: results.HP
+            }));
+            res.json(data);
+        }
+    });
+});
+app.get('/topVelocitat', (req, res) => {
+    db.query(`SELECT nom,velocitat FROM pokedex ORDER BY velocitat DESC LIMIT 5`, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta 1:', err);
+            res.status(500).json({ error: 'Error en la consulta 1' });
+        } else {
+            const data = results.map(results => ({
+                name: results.nom,
+                y: results.velocitat
+            }));
+            res.json(data);
+        }
+    });
+});
+app.get('/topTotal', (req, res) => {
+    db.query(`SELECT nom,total FROM pokedex ORDER BY total DESC LIMIT 5`, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta 1:', err);
+            res.status(500).json({ error: 'Error en la consulta 1' });
+        } else {
+            const data = results.map(results => ({
+                name: results.nom,
+                y: results.total
+            }));
+            res.json(data);
+        }
+    });
+});
 
 app.get('/randomPokemon', (req, res) => {
     db.query(
@@ -117,16 +176,13 @@ app.get('/randomPokemon', (req, res) => {
             res.status(500).json({ error: 'Error en la consulta 1' });
         } else {
             //res.json(results);
-            console.log(results[0].nom);
             var img={
                 link:'',
                 nom:''
             }
             img.link = await googleImgQuery(results[0].nom);
             img.nom = results[0].nom;
-            console.log(img);
             res.json(img);
-
         }
     });
 });
