@@ -7,9 +7,9 @@ const express = require('express');
 const mysql = require('mysql');
 const path = require('path');
 const google = require('googleapis').google;
-const googleSearch =google.customsearch('v1');
+const googleSearch = google.customsearch('v1');
 
-async function googleImgQuery(query){
+async function googleImgQuery(query) {
     /*const response = await googleSearch.cse.list({
         auth:'AIzaSyBdzhrXiFGR4AMQdyX6tiaIm3ubnh_Dpo0',
         cx:'611cd72e554a74cb0',
@@ -30,7 +30,7 @@ async function googleImgQuery(query){
         }
     }*/
     return 'https://www.cristorey3.com/assets/img/jutges/jutges-3.webp'
-    
+
 }
 
 
@@ -171,22 +171,32 @@ app.get('/randomPokemon', (req, res) => {
             ORDER BY RAND()
             LIMIT 1;`,
         async (err, results) => {
+            if (err) {
+                console.error('Error en la consulta 1:', err);
+                res.status(500).json({ error: 'Error en la consulta 1' });
+            } else {
+                //res.json(results);
+                var img = {
+                    link: '',
+                    nom: ''
+                }
+                img.link = await googleImgQuery(results[0].nom);
+                img.nom = results[0].nom;
+                res.json(img);
+            }
+        });
+});
+
+app.get('/quantitatAtac', (req, res) => {
+    db.query(`SELECT FLOOR(atac / 20) * 20  AS attack_interval, COUNT(*) AS number_of_pokemon FROM pokedex GROUP BY attack_interval ORDER BY attack_interval;`, (err, results) => {
         if (err) {
             console.error('Error en la consulta 1:', err);
             res.status(500).json({ error: 'Error en la consulta 1' });
         } else {
-            //res.json(results);
-            var img={
-                link:'',
-                nom:''
-            }
-            img.link = await googleImgQuery(results[0].nom);
-            img.nom = results[0].nom;
-            res.json(img);
+            res.json(results);
         }
     });
-});
-
+})
 
 
 

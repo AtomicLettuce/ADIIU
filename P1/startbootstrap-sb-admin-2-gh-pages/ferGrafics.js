@@ -118,11 +118,73 @@ document.addEventListener('DOMContentLoaded', function () {
             container.style.alignItems = 'center';
             container.appendChild(imgHTML);
         })
+
+    fetch('/quantitatAtac')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const names = [];
+            const types = [];
+
+            data.forEach((item) => {
+                names.push(item.attack_interval);
+                types.push(item.number_of_pokemon);
+            });
+            // Data retrieved https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature
+Highcharts.chart('quantitatStat', {
+    chart: {
+        type: 'spline'
+    },
+    title: {
+        text: 'Quantitat de Pokémon agrupat per atac'
+    },
+    xAxis: {
+        categories: names,
+        title: {
+            text: 'Atac'
+        },
+        accessibility: {
+            description: 'Months of the year'
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'Quantitat'
+        },
+        labels: {
+            format: '{value}'
+        }
+    },
+    tooltip: {
+        crosshairs: true,
+        shared: true
+    },
+    plotOptions: {
+        spline: {
+            marker: {
+                radius: 4,
+                lineColor: '#666666',
+                lineWidth: 1
+            }
+        }
+    },
+    series: [{
+        name: 'Quantitat',
+        marker: {
+            symbol: 'square'
+        },
+        data: types
+
+    }]
+});
+
+
+        });
 });
 
 
 async function ferGrafic(opcio) {
-    console.log(opcio +'opcio:')
+    console.log(opcio + 'opcio:')
     fetch(opcio)
         .then(response => response.json())
         .then(data => {
@@ -138,7 +200,7 @@ async function ferGrafic(opcio) {
                     type: 'column'
                 },
                 title: {
-                    text: opcio.slice(4) +' de Pokémon'
+                    text: opcio.slice(4) + ' de Pokémon'
                 },
                 xAxis: {
                     categories: pokemonNames // Nombres de los Pokémon
@@ -157,4 +219,4 @@ async function ferGrafic(opcio) {
         .catch(error => {
             console.error('Error al obtener los datos de la consulta 2:', error);
         });
-    }
+}
