@@ -54,3 +54,6 @@ podria haver algun usuari maliciós que empràs les nostres claus d'accés per
 causar-mos problemes.
 
 ## Client-side
+
+El client executa el fitxer index.html que s'encarrega de generar tot el 
+
