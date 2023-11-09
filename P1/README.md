@@ -87,3 +87,7 @@ diferents estadístiques (Atac, Defensa, Velocitat, HP i Total). Per exemple,
 mostra quants Pokémon hi ha amb un valor d'Atac entre \[0, 20) quants entre 
 \[20, 40) quants entre \[40, 60), etc. Igual que al gràfic de barres, l'usuari 
 pot canviar quina estadística vol veure en cada moment.
+
+### Bootstrap
+S'ha emprat la plantilla sb-admin-2 de Bootstrap. l'enllaç és el següent:
+https://startbootstrap.com/theme/sb-admin-2
