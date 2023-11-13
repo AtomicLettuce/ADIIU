@@ -4,6 +4,9 @@
 -Marc Melià Flexas
 -Xavier Vives Marcus
 
+## Vídeo explicatiu
+Enllaç al vídeo explicatiu de la pràcitca: [URL][URL][URL]
+
 ## Introducció
 S'ha realitzat una aplicació web que consulta a una base de dades local i 
 mostra diferents informacions de manera visual emprant els gràfics de la 
@@ -91,3 +94,14 @@ pot canviar quina estadística vol veure en cada moment.
 ### Bootstrap
 S'ha emprat la plantilla sb-admin-2 de Bootstrap. l'enllaç és el següent:
 https://startbootstrap.com/theme/sb-admin-2
+
+### HTML Semàntic
+S'han afegit tags semàntics com per exemple <figure>, <main>, <form>, etc. 
+entre d'altres.
+
+### Enllaços
+Dins la barra de navegació, hi ha 3 enllaços:
+
+-A la pàgina principal de la UIB
+-A la font de dades que s'ha emprat per construir la base da dades.
+-Al repositori GitHub que compté aquesta pràctica.
