@@ -54,3 +54,40 @@ podria haver algun usuari maliciós que empràs les nostres claus d'accés per
 causar-mos problemes.
 
 ## Client-side
+El client executa el fitxer index.html que s'encarrega de generar tot el 
+dashboard. El codi HTML i CSS s'ha fet emprant una plantilla Bootstrap.
+
+### Data Dashboard
+El Data Dashboard consta de: 
+
+-Una barra de navegació lateral que compté enllaços 
+a la UIB, al repositori GitHub (on es guarda el codi font), i a la font que 
+s'ha emprat per crear la base de dades del servidor. 
+
+-Una barra superior per simular un Data Dashboard real que compté informació 
+com ID d'usuari, missatges entrants, notificacions, etc.
+
+-Un panell de dades on es dibuixen els diferents gràfics emprant Highcharts.
+Addicionalment, hi ha un apartat de Pokémon destacat que mostra una imatge d'un
+ Pokémon generada aleatòriament. Això es fa emprant la Google API (explicat a 
+l'apartat Server Side) però pel client és una simple petició al nostre 
+servidor.
+
+### Highcarts
+S'han fet 3 gràfics diferents:
+
+-Un "pie chart" que mostra la quantitat de Pokémon que hi ha per cada tipus.
+
+-Un gràfic de barres que mostra els 5 Pokémon que tenen un valor més gros en 
+diferents estadístiques (Atac, Defensa, Velocitat, HP i Total). L'usuari pot
+canviar quina estadística vol veure en cada moment.
+
+-Un "spline chart" que mostra la distribució que segueien els Pokémon en 
+diferents estadístiques (Atac, Defensa, Velocitat, HP i Total). Per exemple, 
+mostra quants Pokémon hi ha amb un valor d'Atac entre \[0, 20) quants entre 
+\[20, 40) quants entre \[40, 60), etc. Igual que al gràfic de barres, l'usuari 
+pot canviar quina estadística vol veure en cada moment.
+
+### Bootstrap
+S'ha emprat la plantilla sb-admin-2 de Bootstrap. l'enllaç és el següent:
+https://startbootstrap.com/theme/sb-admin-2
