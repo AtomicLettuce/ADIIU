@@ -10,25 +10,23 @@ const google = require('googleapis').google;
 const googleSearch = google.customsearch('v1');
 
 async function googleImgQuery(query) {
-    /*const response = await googleSearch.cse.list({
-        auth:'AIzaSyBdzhrXiFGR4AMQdyX6tiaIm3ubnh_Dpo0',
-        cx:'611cd72e554a74cb0',
+    const response = await googleSearch.cse.list({
+        auth: 'AIzaSyBdzhrXiFGR4AMQdyX6tiaIm3ubnh_Dpo0',
+        cx: '611cd72e554a74cb0',
         q: query,
         searchType: 'image',
-        num:2
+        num: 2
     });
     //console.log(response);
     //console.log(response.request.responseURL);
-    
+
     const url = await fetch(response.request.responseURL);
-    const urlresp =await url.json();
-    if('items' in urlresp){
-        console.log('has items')
-        if('items[0].link' in urlresp ){
-            console.log('has link')
-            return urlresp.items[0].link;
-        }
-    }*/
+    const urlresp = await url.json();
+    if ('items' in urlresp) {
+        return urlresp.items[0].link;
+
+    }
+    // Foto placeholder
     return 'https://www.cristorey3.com/assets/img/jutges/jutges-3.webp'
 
 }
@@ -62,7 +60,7 @@ app.listen('6900', () => {
     console.log('Server started on port 6900');
 });
 
-
+// Get quantitat de pokemon per tipus
 app.get('/tipus', (req, res) => {
     db.query(`SELECT 
     tipus, SUM(recompte) quantitat
@@ -198,6 +196,50 @@ app.get('/quantitatAtac', (req, res) => {
     });
 })
 
+app.get('/quantitatDefensa', (req, res) => {
+    db.query(`SELECT FLOOR(defensa / 20) * 20  AS attack_interval, COUNT(*) AS number_of_pokemon FROM pokedex GROUP BY attack_interval ORDER BY attack_interval;`, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta 1:', err);
+            res.status(500).json({ error: 'Error en la consulta 1' });
+        } else {
+            res.json(results);
+        }
+    });
+})
+
+app.get('/quantitatVelocitat', (req, res) => {
+    db.query(`SELECT FLOOR(velocitat / 20) * 20  AS attack_interval, COUNT(*) AS number_of_pokemon FROM pokedex GROUP BY attack_interval ORDER BY attack_interval;`, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta 1:', err);
+            res.status(500).json({ error: 'Error en la consulta 1' });
+        } else {
+            res.json(results);
+        }
+    });
+})
+
+app.get('/quantitatHP', (req, res) => {
+    db.query(`SELECT FLOOR(HP / 20) * 20  AS attack_interval, COUNT(*) AS number_of_pokemon FROM pokedex GROUP BY attack_interval ORDER BY attack_interval;`, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta 1:', err);
+            res.status(500).json({ error: 'Error en la consulta 1' });
+        } else {
+            res.json(results);
+            console.log(results)
+        }
+    });
+})
+
+app.get('/quantitatTotal', (req, res) => {
+    db.query(`SELECT FLOOR(Total / 60) * 60  AS attack_interval, COUNT(*) AS number_of_pokemon FROM pokedex GROUP BY attack_interval ORDER BY attack_interval;`, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta 1:', err);
+            res.status(500).json({ error: 'Error en la consulta 1' });
+        } else {
+            res.json(results);
+        }
+    });
+})
 
 
 

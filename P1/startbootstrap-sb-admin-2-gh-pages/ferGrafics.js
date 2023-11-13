@@ -2,9 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('/tipus')
         .then(response => response.json())
         .then(data => {
-            // Manejar y mostrar los resultados de la primera consulta
-            console.log(data);
-            // Data retrieved from https://netmarketshare.com
+            // COLORS PER POSAR ALS TIPUS
             colors = ['#5190d6', '#9098a1', '#8fa9dc', '#61bd5a', '#fb727a', '#91c12f', '#d97845', '#ab6ac8', '#fe9d56', '#c4b78b', '#f3d13c', '#cf4169', '#5c5366', '#5269ad', '#598ea3', '#0a70c5', '#6fcdc2', '#ec8fe3'];
             var total = 0;
             for (i = 0; i < data.length; i++) {
@@ -62,26 +60,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const pokemonNames = pokemonData.map(pokemon => pokemon.name); // Nombres de los Pokémon
             const attackValues = pokemonData.map(pokemon => pokemon.y); // Valores de ataque de los Pokémon
-            console.log(pokemonNames)
-            console.log(attackValues)
 
             Highcharts.chart('contenidorAtac', {
                 chart: {
                     type: 'column'
                 },
                 title: {
-                    text: 'Ataque de Pokémon'
+                    text: 'Atac de Pokémon'
                 },
                 xAxis: {
                     categories: pokemonNames // Nombres de los Pokémon
                 },
                 yAxis: {
                     title: {
-                        text: 'Ataque'
+                        text: 'Atac'
                     }
                 },
                 series: [{
-                    name: 'Pokemon',
+                    name: 'Pokémon',
                     data: attackValues // Valores de ataque de los Pokémon
                 }]
             });
@@ -90,24 +86,33 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error al obtener los datos de la consulta 2:', error);
         });
 
-    const radioForm = document.getElementById("radioForm");
-    const resultElement = document.getElementById("result");
 
+    // Establir els manejadors d'events dels menús dropdown
+    const radioForm = document.getElementById("radioForm");
+    const radioForm2 = document.getElementById("radioForm2");
+
+    // Establir manejador d'events del menú dropdown top pokemon stat
     radioForm.addEventListener("change", function (event) {
         if (event.target && event.target.type === "radio") {
             const selectedOption = event.target.value;
-            ferGrafic(selectedOption);
+            ferGraficTop(selectedOption);
         }
     });
+    // Establir manejador d'events del menú dropdown quanitat pokemon stat
+    radioForm2.addEventListener("change", function (event) {
+        if (event.target && event.target.type === "radio") {
+            const selectedOption = event.target.value;
+            ferGraficQuantitat(selectedOption);
+        }
+    })
 
 
-
+    // Zona pokémon destacat
     fetch('/randomPokemon')
         .then(response => response.json())
         .then(data => {
             const img = data;
             var container = document.getElementById('pokemonRandom');
-            console.log(img);
             const imgHTML = document.createElement('img');
             imgHTML.src = img.link;
             imgHTML.alt = img.nom;
@@ -118,83 +123,148 @@ document.addEventListener('DOMContentLoaded', function () {
             container.style.alignItems = 'center';
             container.appendChild(imgHTML);
         })
-
+    
+    // Fer gràfic quantitat de pokémon per stat (atac)
     fetch('/quantitatAtac')
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             const names = [];
             const types = [];
-
+            
+            // Formatar dades
             data.forEach((item) => {
                 names.push(item.attack_interval);
                 types.push(item.number_of_pokemon);
             });
-            // Data retrieved https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature
-Highcharts.chart('quantitatStat', {
-    chart: {
-        type: 'spline'
-    },
-    title: {
-        text: 'Quantitat de Pokémon agrupat per atac'
-    },
-    xAxis: {
-        categories: names,
-        title: {
-            text: 'Atac'
-        },
-        accessibility: {
-            description: 'Months of the year'
-        }
-    },
-    yAxis: {
-        title: {
-            text: 'Quantitat'
-        },
-        labels: {
-            format: '{value}'
-        }
-    },
-    tooltip: {
-        crosshairs: true,
-        shared: true
-    },
-    plotOptions: {
-        spline: {
-            marker: {
-                radius: 4,
-                lineColor: '#666666',
-                lineWidth: 1
-            }
-        }
-    },
-    series: [{
-        name: 'Quantitat',
-        marker: {
-            symbol: 'square'
-        },
-        data: types
 
-    }]
-});
+            Highcharts.chart('quantitatStat', {
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: 'Quantitat de Pokémon agrupat per Atac'
+                },
+                xAxis: {
+                    categories: names,
+                    title: {
+                        text: 'Atac'
+                    },
+                    accessibility: {
+                        description: 'Months of the year'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Quantitat'
+                    },
+                    labels: {
+                        format: '{value}'
+                    }
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Quantitat',
+                    marker: {
+                        symbol: 'square'
+                    },
+                    data: types
+
+                }]
+            });
 
 
         });
 });
 
+// Fer gràfic en de quantitat prokémon per stat en funció de la stat que s'ha escollit
+async function ferGraficQuantitat(opcio) {
+    fetch(opcio)
+        .then(response => response.json())
+        .then(data => {
+            const names = [];
+            const types = [];
+            // formatar dades
+            data.forEach((item) => {
+                names.push(item.attack_interval);
+                types.push(item.number_of_pokemon);
+            });
+            // refer el gràfic i sobreescriure'l
+            Highcharts.chart('quantitatStat', {
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: 'Quantitat de Pokémon agrupat per ' + opcio.slice(10)
+                },
+                xAxis: {
+                    categories: names,
+                    title: {
+                        text: opcio.slice(10)
+                    },
+                    accessibility: {
+                        description: 'Months of the year'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Quantitat'
+                    },
+                    labels: {
+                        format: '{value}'
+                    }
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Quantitat',
+                    marker: {
+                        symbol: 'square'
+                    },
+                    data: types
 
-async function ferGrafic(opcio) {
-    console.log(opcio + 'opcio:')
+                }]
+            });
+
+
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos de la consulta 2:', error);
+        });
+}
+
+// Fer gràfic en de top pokémon per stat en funció de la stat que s'ha escollit
+async function ferGraficTop(opcio) {
     fetch(opcio)
         .then(response => response.json())
         .then(data => {
             const pokemonData = data; // Los datos obtenidos de tu API
-
+            // Formatar dadee
             const pokemonNames = pokemonData.map(pokemon => pokemon.name); // Nombres de los Pokémon
             const statValues = pokemonData.map(pokemon => pokemon.y); // Valores de ataque de los Pokémon
-            console.log(pokemonNames)
-            console.log(statValues)
-
+            // refer el gràfic i sobreescriure'l
             Highcharts.chart('contenidorAtac', {
                 chart: {
                     type: 'column'
