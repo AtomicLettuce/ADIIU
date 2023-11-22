@@ -7,6 +7,9 @@
 ## Vídeo explicatiu
 Enllaç al vídeo explicatiu de la pràcitca: https://youtu.be/OSvtRXik0Bs
 
+## Repositori GitHub
+Ennlaç al repositori GitHub: https://github.com/AtomicLettuce/ADIIU/tree/main 
+
 ## Introducció
 S'ha realitzat una aplicació web que consulta a una base de dades local i 
 mostra diferents informacions de manera visual emprant els gràfics de la 
