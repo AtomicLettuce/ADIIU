@@ -5,7 +5,7 @@
 -Xavier Vives Marcus
 
 ## Vídeo explicatiu
-Enllaç al vídeo explicatiu de la pràcitca: [URL][URL][URL]
+Enllaç al vídeo explicatiu de la pràcitca: https://youtu.be/OSvtRXik0Bs
 
 ## Introducció
 S'ha realitzat una aplicació web que consulta a una base de dades local i 
@@ -105,3 +105,8 @@ Dins la barra de navegació, hi ha 3 enllaços:
 -A la pàgina principal de la UIB
 -A la font de dades que s'ha emprat per construir la base da dades.
 -Al repositori GitHub que compté aquesta pràctica.
+
+### Responsive
+L'aplicació web s'adapta al tamany de la pantalla de l'usuari sense deformar 
+la vista. És a dir, no importa si l'usuari accedeix des de un portàtil, tablet,
+ telèfon, etc.
